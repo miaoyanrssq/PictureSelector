@@ -1,10 +1,13 @@
 package com.luck.picture.lib;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.luck.picture.lib.adapter.BottomPreviewAdapter;
 import com.luck.picture.lib.adapter.SimpleFragmentAdapter;
 import com.luck.picture.lib.anim.OptAnimationLoader;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.EventEntity;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.immersive.ImmersiveManage;
 import com.luck.picture.lib.observable.ImagesObservable;
 import com.luck.picture.lib.rxbus2.RxBus;
 import com.luck.picture.lib.rxbus2.Subscribe;
@@ -44,9 +49,8 @@ import java.util.List;
 public class PicturePreviewActivity extends PictureBaseActivity implements
         View.OnClickListener, Animation.AnimationListener, SimpleFragmentAdapter.OnCallBackActivity {
     private ImageView picture_left_back;
-    private TextView tv_img_num, tv_title, tv_ok;
+    private TextView tv_title, tv_ok;
     private PreviewViewPager viewPager;
-    private LinearLayout id_ll_ok;
     private int position;
     private LinearLayout ll_check;
     private List<LocalMedia> images = new ArrayList<>();
@@ -58,6 +62,13 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
     private int index;
     private int screenWidth;
     private Handler mHandler;
+
+    boolean is_bottom_preview;
+
+    private RecyclerView recycleBottom;
+    private BottomPreviewAdapter bottomPreviewAdapter;
+
+    private boolean isShowCamera;
 
     /**
      * EventBus 3.0 回调
@@ -81,6 +92,14 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
     }
 
     @Override
+    public void immersive() {
+        ImmersiveManage.immersiveAboveAPI23(this
+                , Color.TRANSPARENT
+                , Color.TRANSPARENT
+                , openWhiteStatusBar);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picture_preview);
@@ -94,23 +113,18 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         picture_left_back = (ImageView) findViewById(R.id.picture_left_back);
         viewPager = (PreviewViewPager) findViewById(R.id.preview_pager);
         ll_check = (LinearLayout) findViewById(R.id.ll_check);
-        id_ll_ok = (LinearLayout) findViewById(R.id.id_ll_ok);
         check = (TextView) findViewById(R.id.check);
         picture_left_back.setOnClickListener(this);
         tv_ok = (TextView) findViewById(R.id.tv_ok);
-        id_ll_ok.setOnClickListener(this);
-        tv_img_num = (TextView) findViewById(R.id.tv_img_num);
+        tv_ok.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.picture_title);
         position = getIntent().getIntExtra(PictureConfig.EXTRA_POSITION, 0);
-        tv_ok.setText(numComplete ? getString(R.string.picture_done_front_num,
-                0, config.selectionMode == PictureConfig.SINGLE ? 1 : config.maxSelectNum)
-                : getString(R.string.picture_please_select));
 
-        tv_img_num.setSelected(config.checkNumMode ? true : false);
 
         selectImages = (List<LocalMedia>) getIntent().
                 getSerializableExtra(PictureConfig.EXTRA_SELECT_LIST);
-        boolean is_bottom_preview = getIntent().
+        isShowCamera = getIntent().getBooleanExtra("showCamera", true);
+        is_bottom_preview = getIntent().
                 getBooleanExtra(PictureConfig.EXTRA_BOTTOM_PREVIEW, false);
         if (is_bottom_preview) {
             // 底部预览按钮过来
@@ -119,7 +133,9 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         } else {
             images = ImagesObservable.getInstance().readLocalMedias();
         }
+        initBottomRecycleView();
         initViewPageAdapterData();
+
         ll_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +147,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                         boolean toEqual = PictureMimeType.
                                 mimeToEqual(pictureType, image.getPictureType());
                         if (!toEqual) {
-                            ToastManage.s(mContext,getString(R.string.picture_rule));
+                            ToastManage.s(mContext, getString(R.string.picture_rule));
                             return;
                         }
                     }
@@ -156,6 +172,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                         if (config.selectionMode == PictureConfig.SINGLE) {
                             singleRadioMediaImage();
                         }
+                        image.setChecked(true);
                         selectImages.add(image);
                         image.setNum(selectImages.size());
                         if (config.checkNumMode) {
@@ -171,6 +188,8 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                             }
                         }
                     }
+                    bottomPreviewAdapter.referesh(selectImages);
+                    bottomPreviewAdapter.notifyDataSetChanged();
                     onSelectNumChange(true);
                 }
             }
@@ -198,6 +217,41 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    private void initBottomRecycleView() {
+        recycleBottom = findViewById(R.id.recycle_bottom);
+        recycleBottom.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        if(selectImages.size() == 0){
+            recycleBottom.setVisibility(View.GONE);
+        }
+        if(is_bottom_preview){
+            selectImages.get(0).setChecked(true);
+            recycleBottom.smoothScrollToPosition(0);
+        }else {
+            LocalMedia media = images.get(position);
+            if(selectImages.size() != 0){
+                for (int i = 0 ; i< selectImages.size() ; i++){
+                    if(media.getPath().equals(selectImages.get(i).getPath())){
+                        selectImages.get(i).setChecked(true);
+                    }
+                }
+            }
+        }
+        bottomPreviewAdapter = new BottomPreviewAdapter(this, selectImages);
+        recycleBottom.setAdapter(bottomPreviewAdapter);
+        bottomPreviewAdapter.setOnItemClcikLitener(new BottomPreviewAdapter.OnItemClcikLitener() {
+            @Override
+            public void OnItemClcik(int position, LocalMedia image) {
+                if(is_bottom_preview){
+                    viewPager.setCurrentItem(position, false);
+                }else {
+                    int v_position = isShowCamera ? selectImages.get(position).getPosition() - 1 : selectImages.get(position).getPosition();
+                    viewPager.setCurrentItem(v_position, false);
+                }
+                bottomPreviewAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -264,7 +318,6 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
             LocalMedia media = images.get(position);
             index = media.getPosition();
             if (config.checkNumMode) {
-                tv_img_num.setSelected(true);
                 check.setText(media.getNum() + "");
                 notifyCheckChanged(media);
             }
@@ -278,9 +331,12 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         if (config.checkNumMode) {
             check.setText("");
             for (LocalMedia media : selectImages) {
+                media.setChecked(false);
                 if (media.getPath().equals(imageBean.getPath())) {
                     imageBean.setNum(media.getNum());
                     check.setText(String.valueOf(imageBean.getNum()));
+                    selectImages.get(media.getSelectPosition()).setChecked(true);
+                    bottomPreviewAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -308,6 +364,15 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         } else {
             check.setSelected(false);
         }
+
+        LocalMedia localMedia = images.get(position);
+        for (LocalMedia media : selectImages) {
+            media.setChecked(false);
+            if (media.getPath().equals(localMedia.getPath())) {
+                selectImages.get(media.getSelectPosition()).setChecked(true);
+                bottomPreviewAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     /**
@@ -333,29 +398,13 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         this.refresh = isRefresh;
         boolean enable = selectImages.size() != 0;
         if (enable) {
-            tv_ok.setSelected(true);
-            id_ll_ok.setEnabled(true);
-            if (numComplete) {
-                tv_ok.setText(getString(R.string.picture_done_front_num, selectImages.size(),
-                        config.selectionMode == PictureConfig.SINGLE ? 1 : config.maxSelectNum));
-            } else {
-                if (refresh) {
-                    tv_img_num.startAnimation(animation);
-                }
-                tv_img_num.setVisibility(View.VISIBLE);
-                tv_img_num.setText(String.valueOf(selectImages.size()));
-                tv_ok.setText(getString(R.string.picture_completed));
-            }
+            tv_ok.setText("完成(" + selectImages.size() + ")");
+            tv_ok.setTextColor(Color.WHITE);
+            recycleBottom.setVisibility(View.VISIBLE);
         } else {
-            id_ll_ok.setEnabled(false);
-            tv_ok.setSelected(false);
-            if (numComplete) {
-                tv_ok.setText(getString(R.string.picture_done_front_num, 0,
-                        config.selectionMode == PictureConfig.SINGLE ? 1 : config.maxSelectNum));
-            } else {
-                tv_img_num.setVisibility(View.INVISIBLE);
-                tv_ok.setText(getString(R.string.picture_please_select));
-            }
+            tv_ok.setText("完成");
+            tv_ok.setTextColor(Color.GRAY);
+            recycleBottom.setVisibility(View.GONE);
         }
         updateSelector(refresh);
     }
@@ -392,9 +441,13 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
         if (id == R.id.picture_left_back) {
             onBackPressed();
         }
-        if (id == R.id.id_ll_ok) {
+        if (id == R.id.tv_ok) {
             // 如果设置了图片最小选择数量，则判断是否满足条件
             int size = selectImages.size();
+            if(size == 0){
+                ToastManage.s(mContext, "没有选择任何内容");
+                return;
+            }
             LocalMedia image = selectImages.size() > 0 ? selectImages.get(0) : null;
             String pictureType = image != null ? image.getPictureType() : "";
             if (config.minSelectNum > 0) {
@@ -402,7 +455,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                     boolean eqImg = pictureType.startsWith(PictureConfig.IMAGE);
                     String str = eqImg ? getString(R.string.picture_min_img_num, config.minSelectNum)
                             : getString(R.string.picture_min_video_num, config.minSelectNum);
-                    ToastManage.s(mContext,str);
+                    ToastManage.s(mContext, str);
                     return;
                 }
             }
@@ -454,7 +507,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
             Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
-            ToastManage.s(mContext,throwable.getMessage());
+            ToastManage.s(mContext, throwable.getMessage());
         }
     }
 

@@ -3,6 +3,7 @@ package com.luck.picture.lib;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -452,7 +453,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.picture_left_back || id == R.id.picture_right) {
+        if (id == R.id.picture_left_back ) {
             if (folderWindow.isShowing()) {
                 folderWindow.dismiss();
             } else {
@@ -482,13 +483,19 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             bundle.putSerializable(PictureConfig.EXTRA_PREVIEW_SELECT_LIST, (Serializable) medias);
             bundle.putSerializable(PictureConfig.EXTRA_SELECT_LIST, (Serializable) selectedImages);
             bundle.putBoolean(PictureConfig.EXTRA_BOTTOM_PREVIEW, true);
+            bundle.putBoolean("showCamera", adapter.getShowCamera());
             startActivity(PicturePreviewActivity.class, bundle,
                     config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
             overridePendingTransition(R.anim.a5, 0);
         }
 
-        if (id == R.id.id_ll_ok) {
+        if (id == R.id.id_ll_ok || id == R.id.picture_right) {
             List<LocalMedia> images = adapter.getSelectedImages();
+            if(images.size() == 0){
+                ToastManage.s(mContext, "没有选择任何内容");
+                return;
+
+            }
             LocalMedia image = images.size() > 0 ? images.get(0) : null;
             String pictureType = image != null ? image.getPictureType() : "";
             // 如果设置了图片最小选择数量，则判断是否满足条件
@@ -801,6 +808,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 ImagesObservable.getInstance().saveLocalMedia(previewImages);
                 bundle.putSerializable(PictureConfig.EXTRA_SELECT_LIST, (Serializable) selectedImages);
                 bundle.putInt(PictureConfig.EXTRA_POSITION, position);
+                bundle.putBoolean("showCamera", adapter.getShowCamera());
                 startActivity(PicturePreviewActivity.class, bundle,
                         config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
                 overridePendingTransition(R.anim.a5, 0);
@@ -861,6 +869,8 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 picture_tv_img_num.setVisibility(View.VISIBLE);
                 picture_tv_img_num.setText(String.valueOf(selectImages.size()));
                 picture_tv_ok.setText(getString(R.string.picture_completed));
+                picture_right.setText("完成(" +selectImages.size()+ ")");
+                picture_right.setTextColor(Color.WHITE);
                 anim = false;
             }
         } else {
@@ -874,6 +884,8 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             } else {
                 picture_tv_img_num.setVisibility(View.INVISIBLE);
                 picture_tv_ok.setText(getString(R.string.picture_please_select));
+                picture_right.setText("完成");
+                picture_right.setTextColor(Color.GRAY);
             }
         }
     }

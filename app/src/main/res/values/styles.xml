@@ -97,9 +97,9 @@
         <!--预览界面标题文字颜色-->
         <item name="picture.ac_preview.title.textColor">@color/white</item>
         <!--预览界面已完成文字颜色-->
-        <item name="picture.ac_preview.complete.textColor">@color/blue</item>
+        <item name="picture.ac_preview.complete.textColor">@color/white</item>
         <!--预览界面标题栏背景色-->
-        <item name="picture.ac_preview.title.bg">@color/blue</item>
+        <item name="picture.ac_preview.title.bg">@android:color/transparent</item>
         <!--预览界面底部背景色-->
         <item name="picture.ac_preview.bottom.bg">@color/color_fa</item>
         <!--预览界面返回箭头-->

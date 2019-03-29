@@ -28,6 +28,16 @@ public class LocalMedia implements Parcelable {
     private int width;
     private int height;
 
+    private int selectPosition;
+
+    public int getSelectPosition() {
+        return selectPosition;
+    }
+
+    public void setSelectPosition(int selectPosition) {
+        this.selectPosition = selectPosition;
+    }
+
     public LocalMedia() {
 
     }

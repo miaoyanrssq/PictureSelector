@@ -89,6 +89,10 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.showCamera = showCamera;
     }
 
+    public boolean getShowCamera(){
+        return showCamera;
+    }
+
     public void bindImagesData(List<LocalMedia> images) {
         this.images = images;
         notifyDataSetChanged();
