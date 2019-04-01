@@ -333,9 +333,9 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                     imageBean.setNum(media.getNum());
                     check.setText(String.valueOf(imageBean.getNum()));
                     selectImages.get(media.getSelectPosition()).setChecked(true);
-                    bottomPreviewAdapter.notifyDataSetChanged();
                 }
             }
+            bottomPreviewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -367,9 +367,9 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
             media.setChecked(false);
             if (media.getPath().equals(localMedia.getPath())) {
                 selectImages.get(media.getSelectPosition()).setChecked(true);
-                bottomPreviewAdapter.notifyDataSetChanged();
             }
         }
+        bottomPreviewAdapter.notifyDataSetChanged();
     }
 
     /**
