@@ -31,9 +31,6 @@ import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.ToastManage;
 import com.luck.picture.lib.tools.VoiceUtils;
 import com.luck.picture.lib.widget.PreviewViewPager;
-import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropMulti;
-import com.yalantis.ucrop.model.CutInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -490,25 +487,25 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case UCropMulti.REQUEST_MULTI_CROP:
-                    List<CutInfo> list = UCropMulti.getOutput(data);
-                    setResult(RESULT_OK, new Intent().putExtra(UCropMulti.EXTRA_OUTPUT_URI_LIST,
-                            (Serializable) list));
-                    finish();
-                    break;
-                case UCrop.REQUEST_CROP:
-                    if (data != null) {
-                        setResult(RESULT_OK, data);
-                    }
-                    finish();
-                    break;
-            }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
-            ToastManage.s(mContext, throwable.getMessage());
-        }
+//        if (resultCode == RESULT_OK) {
+//            switch (requestCode) {
+//                case UCropMulti.REQUEST_MULTI_CROP:
+//                    List<CutInfo> list = UCropMulti.getOutput(data);
+//                    setResult(RESULT_OK, new Intent().putExtra(UCropMulti.EXTRA_OUTPUT_URI_LIST,
+//                            (Serializable) list));
+//                    finish();
+//                    break;
+//                case UCrop.REQUEST_CROP:
+//                    if (data != null) {
+//                        setResult(RESULT_OK, data);
+//                    }
+//                    finish();
+//                    break;
+//            }
+//        } else if (resultCode == UCrop.RESULT_ERROR) {
+//            Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
+//            ToastManage.s(mContext, throwable.getMessage());
+//        }
     }
 
 

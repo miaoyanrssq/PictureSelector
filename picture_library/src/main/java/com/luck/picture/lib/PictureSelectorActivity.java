@@ -49,9 +49,6 @@ import com.luck.picture.lib.tools.StringUtils;
 import com.luck.picture.lib.tools.ToastManage;
 import com.luck.picture.lib.widget.FolderPopWindow;
 import com.luck.picture.lib.widget.PhotoPopupWindow;
-import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropMulti;
-import com.yalantis.ucrop.model.CutInfo;
 
 import java.io.File;
 import java.io.Serializable;
@@ -484,8 +481,10 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             bundle.putSerializable(PictureConfig.EXTRA_SELECT_LIST, (Serializable) selectedImages);
             bundle.putBoolean(PictureConfig.EXTRA_BOTTOM_PREVIEW, true);
             bundle.putBoolean("showCamera", adapter.getShowCamera());
+//            startActivity(PicturePreviewActivity.class, bundle,
+//                    config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
             startActivity(PicturePreviewActivity.class, bundle,
-                    config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
+                    config.selectionMode == PictureConfig.SINGLE ? 69 : 609);
             overridePendingTransition(R.anim.a5, 0);
         }
 
@@ -809,8 +808,10 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 bundle.putSerializable(PictureConfig.EXTRA_SELECT_LIST, (Serializable) selectedImages);
                 bundle.putInt(PictureConfig.EXTRA_POSITION, position);
                 bundle.putBoolean("showCamera", adapter.getShowCamera());
+//                startActivity(PicturePreviewActivity.class, bundle,
+//                        config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
                 startActivity(PicturePreviewActivity.class, bundle,
-                        config.selectionMode == PictureConfig.SINGLE ? UCrop.REQUEST_CROP : UCropMulti.REQUEST_MULTI_CROP);
+                        config.selectionMode == PictureConfig.SINGLE ? 69 : 609);
                 overridePendingTransition(R.anim.a5, 0);
                 break;
             case PictureConfig.TYPE_VIDEO:
@@ -898,50 +899,50 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             LocalMedia media;
             String imageType;
             switch (requestCode) {
-                case UCrop.REQUEST_CROP:
-                    Uri resultUri = UCrop.getOutput(data);
-                    String cutPath = resultUri.getPath();
-                    if (adapter != null) {
-                        // 取单张裁剪已选中图片的path作为原图
-                        List<LocalMedia> mediaList = adapter.getSelectedImages();
-                        media = mediaList != null && mediaList.size() > 0 ? mediaList.get(0) : null;
-                        if (media != null) {
-                            originalPath = media.getPath();
-                            media = new LocalMedia(originalPath, media.getDuration(), false,
-                                    media.getPosition(), media.getNum(), config.mimeType);
-                            media.setCutPath(cutPath);
-                            media.setCut(true);
-                            imageType = PictureMimeType.createImageType(cutPath);
-                            media.setPictureType(imageType);
-                            medias.add(media);
-                            handlerResult(medias);
-                        }
-                    } else if (config.camera) {
-                        // 单独拍照
-                        media = new LocalMedia(cameraPath, 0, false,
-                                config.isCamera ? 1 : 0, 0, config.mimeType);
-                        media.setCut(true);
-                        media.setCutPath(cutPath);
-                        imageType = PictureMimeType.createImageType(cutPath);
-                        media.setPictureType(imageType);
-                        medias.add(media);
-                        handlerResult(medias);
-                    }
-                    break;
-                case UCropMulti.REQUEST_MULTI_CROP:
-                    List<CutInfo> mCuts = UCropMulti.getOutput(data);
-                    for (CutInfo c : mCuts) {
-                        media = new LocalMedia();
-                        imageType = PictureMimeType.createImageType(c.getPath());
-                        media.setCut(true);
-                        media.setPath(c.getPath());
-                        media.setCutPath(c.getCutPath());
-                        media.setPictureType(imageType);
-                        media.setMimeType(config.mimeType);
-                        medias.add(media);
-                    }
-                    handlerResult(medias);
-                    break;
+//                case UCrop.REQUEST_CROP:
+//                    Uri resultUri = UCrop.getOutput(data);
+//                    String cutPath = resultUri.getPath();
+//                    if (adapter != null) {
+//                        // 取单张裁剪已选中图片的path作为原图
+//                        List<LocalMedia> mediaList = adapter.getSelectedImages();
+//                        media = mediaList != null && mediaList.size() > 0 ? mediaList.get(0) : null;
+//                        if (media != null) {
+//                            originalPath = media.getPath();
+//                            media = new LocalMedia(originalPath, media.getDuration(), false,
+//                                    media.getPosition(), media.getNum(), config.mimeType);
+//                            media.setCutPath(cutPath);
+//                            media.setCut(true);
+//                            imageType = PictureMimeType.createImageType(cutPath);
+//                            media.setPictureType(imageType);
+//                            medias.add(media);
+//                            handlerResult(medias);
+//                        }
+//                    } else if (config.camera) {
+//                        // 单独拍照
+//                        media = new LocalMedia(cameraPath, 0, false,
+//                                config.isCamera ? 1 : 0, 0, config.mimeType);
+//                        media.setCut(true);
+//                        media.setCutPath(cutPath);
+//                        imageType = PictureMimeType.createImageType(cutPath);
+//                        media.setPictureType(imageType);
+//                        medias.add(media);
+//                        handlerResult(medias);
+//                    }
+//                    break;
+//                case UCropMulti.REQUEST_MULTI_CROP:
+//                    List<CutInfo> mCuts = UCropMulti.getOutput(data);
+//                    for (CutInfo c : mCuts) {
+//                        media = new LocalMedia();
+//                        imageType = PictureMimeType.createImageType(c.getPath());
+//                        media.setCut(true);
+//                        media.setPath(c.getPath());
+//                        media.setCutPath(c.getCutPath());
+//                        media.setPictureType(imageType);
+//                        media.setMimeType(config.mimeType);
+//                        medias.add(media);
+//                    }
+//                    handlerResult(medias);
+//                    break;
                 case PictureConfig.REQUEST_CAMERA:
                     if (config.mimeType == PictureMimeType.ofAudio()) {
                         cameraPath = getAudioPath(data);
@@ -1037,10 +1038,11 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             if (config.camera) {
                 closeActivity();
             }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
-            ToastManage.s(mContext, throwable.getMessage());
         }
+//        else if (resultCode == UCrop.RESULT_ERROR) {
+//            Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
+//            ToastManage.s(mContext, throwable.getMessage());
+//        }
     }
 
     /**

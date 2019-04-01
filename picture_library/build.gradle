@@ -20,7 +20,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':ucrop')
+//    compile project(':ucrop')
     //noinspection GradleCompatible
     compile "com.android.support:appcompat-v7:${cfgs.androidSupportVersion}"
     //noinspection GradleCompatible
