@@ -19,11 +19,10 @@
         <activity android:name=".PicturePreviewActivity" />
         <activity
             android:name=".PictureVideoPlayActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensor" />
         <activity android:name=".PictureExternalPreviewActivity" />
-        <activity android:name="com.yalantis.ucrop.UCropActivity" />
-        <activity android:name="com.yalantis.ucrop.PictureMultiCuttingActivity" />
+        <!--<activity android:name="com.yalantis.ucrop.UCropActivity" />-->
+        <!--<activity android:name="com.yalantis.ucrop.PictureMultiCuttingActivity" />-->
         <activity android:name=".PicturePlayAudioActivity" />
 
 

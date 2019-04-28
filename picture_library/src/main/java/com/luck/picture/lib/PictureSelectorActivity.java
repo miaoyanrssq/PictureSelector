@@ -871,7 +871,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 picture_tv_img_num.setText(String.valueOf(selectImages.size()));
                 picture_tv_ok.setText(getString(R.string.picture_completed));
                 picture_right.setText("完成(" +selectImages.size()+ ")");
-                picture_right.setTextColor(Color.WHITE);
+                picture_right.setTextColor(getResources().getColor(R.color._4786ff));
                 anim = false;
             }
         } else {

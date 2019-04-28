@@ -93,7 +93,7 @@
         <!--图片列表已完成文字颜色-->
         <item name="picture.complete.textColor">@color/blue</item>
         <!--图片已选数量圆点背景色-->
-        <item name="picture.num.style">@drawable/num_oval_blue</item>
+        <item name="picture.num.style">@drawable/num_oval_blue_me</item>
         <!--预览界面标题文字颜色-->
         <item name="picture.ac_preview.title.textColor">@color/white</item>
         <!--预览界面已完成文字颜色-->

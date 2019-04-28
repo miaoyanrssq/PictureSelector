@@ -350,7 +350,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 aspect_ratio_y = 9;
                 break;
             case R.id.rb_default_style:
-                themeId = R.style.picture_default_style;
+//                themeId = R.style.picture_default_style;
+                themeId = R.style.picture_me_edit_style;
                 break;
             case R.id.rb_white_style:
                 themeId = R.style.picture_white_style;

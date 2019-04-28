@@ -20,7 +20,9 @@
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:background="?attr/picture.bottom.bg"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/picture_id_preview"

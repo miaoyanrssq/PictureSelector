@@ -136,7 +136,7 @@ public class SimpleFragmentAdapter extends PagerAdapter {
                 @Override
                 public void onViewTap(View view, float x, float y) {
                     if (onBackPressed != null) {
-                        onBackPressed.onActivityBackPressed();
+//                        onBackPressed.onActivityBackPressed();
                     }
                 }
             });
@@ -144,7 +144,7 @@ public class SimpleFragmentAdapter extends PagerAdapter {
                 @Override
                 public void onClick(View v) {
                     if (onBackPressed != null) {
-                        onBackPressed.onActivityBackPressed();
+//                        onBackPressed.onActivityBackPressed();
                     }
                 }
             });
