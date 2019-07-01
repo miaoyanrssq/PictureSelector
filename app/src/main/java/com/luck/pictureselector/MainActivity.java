@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onAddPicClick() {
             boolean mode = cb_mode.isChecked();
+
             if (mode) {
                 // 进入相册 以下是例子：不需要的api可以不写
                 PictureSelector.create(MainActivity.this)
