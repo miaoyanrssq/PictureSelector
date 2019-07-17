@@ -29,6 +29,8 @@ import com.luck.picture.lib.tools.AttrsUtils;
 import com.luck.picture.lib.tools.DateUtils;
 import com.luck.picture.lib.tools.DoubleUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropMulti;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -280,31 +282,31 @@ public class PictureBaseActivity extends FragmentActivity {
      * @param originalPath
      */
     protected void startCrop(String originalPath) {
-//        UCrop.Options options = new UCrop.Options();
-//        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
-//        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);
-//        int titleColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_title_color);
-//        options.setToolbarColor(toolbarColor);
-//        options.setStatusBarColor(statusColor);
-//        options.setToolbarWidgetColor(titleColor);
-//        options.setCircleDimmedLayer(config.circleDimmedLayer);
-//        options.setShowCropFrame(config.showCropFrame);
-//        options.setShowCropGrid(config.showCropGrid);
-//        options.setDragFrameEnabled(config.isDragFrame);
-//        options.setScaleEnabled(config.scaleEnabled);
-//        options.setRotateEnabled(config.rotateEnabled);
-//        options.setCompressionQuality(config.cropCompressQuality);
-//        options.setHideBottomControls(config.hideBottomControls);
-//        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
-//        boolean isHttp = PictureMimeType.isHttp(originalPath);
-//        String imgType = PictureMimeType.getLastImgType(originalPath);
-//        Uri uri = isHttp ? Uri.parse(originalPath) : Uri.fromFile(new File(originalPath));
-//        UCrop.of(uri, Uri.fromFile(new File(PictureFileUtils.getDiskCacheDir(this),
-//                System.currentTimeMillis() + imgType)))
-//                .withAspectRatio(config.aspect_ratio_x, config.aspect_ratio_y)
-//                .withMaxResultSize(config.cropWidth, config.cropHeight)
-//                .withOptions(options)
-//                .start(this);
+        UCrop.Options options = new UCrop.Options();
+        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
+        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);
+        int titleColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_title_color);
+        options.setToolbarColor(toolbarColor);
+        options.setStatusBarColor(statusColor);
+        options.setToolbarWidgetColor(titleColor);
+        options.setCircleDimmedLayer(config.circleDimmedLayer);
+        options.setShowCropFrame(config.showCropFrame);
+        options.setShowCropGrid(config.showCropGrid);
+        options.setDragFrameEnabled(config.isDragFrame);
+        options.setScaleEnabled(config.scaleEnabled);
+        options.setRotateEnabled(config.rotateEnabled);
+        options.setCompressionQuality(config.cropCompressQuality);
+        options.setHideBottomControls(config.hideBottomControls);
+        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
+        boolean isHttp = PictureMimeType.isHttp(originalPath);
+        String imgType = PictureMimeType.getLastImgType(originalPath);
+        Uri uri = isHttp ? Uri.parse(originalPath) : Uri.fromFile(new File(originalPath));
+        UCrop.of(uri, Uri.fromFile(new File(PictureFileUtils.getDiskCacheDir(this),
+                System.currentTimeMillis() + imgType)))
+                .withAspectRatio(config.aspect_ratio_x, config.aspect_ratio_y)
+                .withMaxResultSize(config.cropWidth, config.cropHeight)
+                .withOptions(options)
+                .start(this);
     }
 
     /**
@@ -313,33 +315,33 @@ public class PictureBaseActivity extends FragmentActivity {
      * @param list
      */
     protected void startCrop(ArrayList<String> list) {
-//        UCropMulti.Options options = new UCropMulti.Options();
-//        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
-//        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);
-//        int titleColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_title_color);
-//        options.setToolbarColor(toolbarColor);
-//        options.setStatusBarColor(statusColor);
-//        options.setToolbarWidgetColor(titleColor);
-//        options.setCircleDimmedLayer(config.circleDimmedLayer);
-//        options.setShowCropFrame(config.showCropFrame);
-//        options.setDragFrameEnabled(config.isDragFrame);
-//        options.setShowCropGrid(config.showCropGrid);
-//        options.setScaleEnabled(config.scaleEnabled);
-//        options.setRotateEnabled(config.rotateEnabled);
-//        options.setHideBottomControls(true);
-//        options.setCompressionQuality(config.cropCompressQuality);
-//        options.setCutListData(list);
-//        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
-//        String path = list.size() > 0 ? list.get(0) : "";
-//        boolean isHttp = PictureMimeType.isHttp(path);
-//        String imgType = PictureMimeType.getLastImgType(path);
-//        Uri uri = isHttp ? Uri.parse(path) : Uri.fromFile(new File(path));
-//        UCropMulti.of(uri, Uri.fromFile(new File(PictureFileUtils.getDiskCacheDir(this),
-//                System.currentTimeMillis() + imgType)))
-//                .withAspectRatio(config.aspect_ratio_x, config.aspect_ratio_y)
-//                .withMaxResultSize(config.cropWidth, config.cropHeight)
-//                .withOptions(options)
-//                .start(this);
+        UCropMulti.Options options = new UCropMulti.Options();
+        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
+        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);
+        int titleColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_title_color);
+        options.setToolbarColor(toolbarColor);
+        options.setStatusBarColor(statusColor);
+        options.setToolbarWidgetColor(titleColor);
+        options.setCircleDimmedLayer(config.circleDimmedLayer);
+        options.setShowCropFrame(config.showCropFrame);
+        options.setDragFrameEnabled(config.isDragFrame);
+        options.setShowCropGrid(config.showCropGrid);
+        options.setScaleEnabled(config.scaleEnabled);
+        options.setRotateEnabled(config.rotateEnabled);
+        options.setHideBottomControls(true);
+        options.setCompressionQuality(config.cropCompressQuality);
+        options.setCutListData(list);
+        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
+        String path = list.size() > 0 ? list.get(0) : "";
+        boolean isHttp = PictureMimeType.isHttp(path);
+        String imgType = PictureMimeType.getLastImgType(path);
+        Uri uri = isHttp ? Uri.parse(path) : Uri.fromFile(new File(path));
+        UCropMulti.of(uri, Uri.fromFile(new File(PictureFileUtils.getDiskCacheDir(this),
+                System.currentTimeMillis() + imgType)))
+                .withAspectRatio(config.aspect_ratio_x, config.aspect_ratio_y)
+                .withMaxResultSize(config.cropWidth, config.cropHeight)
+                .withOptions(options)
+                .start(this);
     }
 
 

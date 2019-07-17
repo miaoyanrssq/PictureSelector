@@ -143,7 +143,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,
                         .previewVideo(cb_preview_video.isChecked())
                         .enablePreviewAudio(cb_preview_audio.isChecked()) // 是否可播放音频
                         .isCamera(cb_isCamera.isChecked())
-//                        .enableCrop(cb_crop.isChecked())
+                        .enableCrop(cb_crop.isChecked())
                         .compress(cb_compress.isChecked())
                         .glideOverride(160, 160)
                         .previewEggs(true)
@@ -169,7 +169,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,
                         .previewVideo(cb_preview_video.isChecked())
                         .enablePreviewAudio(cb_preview_audio.isChecked()) // 是否可播放音频
                         .isCamera(cb_isCamera.isChecked())
-//                        .enableCrop(cb_crop.isChecked())
+                        .enableCrop(cb_crop.isChecked())
                         .compress(cb_compress.isChecked())
                         .glideOverride(160, 160)
                         .withAspectRatio(aspect_ratio_x, aspect_ratio_y)

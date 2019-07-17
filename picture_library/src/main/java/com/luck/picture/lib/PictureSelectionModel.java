@@ -64,7 +64,7 @@ public class PictureSelectionModel {
      * @param enableCrop Do you want to start cutting ?
      * @return
      */
-    private PictureSelectionModel enableCrop(boolean enableCrop) {
+    public PictureSelectionModel enableCrop(boolean enableCrop) {
         selectionConfig.enableCrop = enableCrop;
         return this;
     }
