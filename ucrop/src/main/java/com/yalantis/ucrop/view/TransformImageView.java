@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -147,10 +148,10 @@ public class TransformImageView extends ImageView {
     public void setImageUri(@NonNull final Uri imageUri, @Nullable final Uri outputUri) throws Exception {
         int maxBitmapSize = getMaxBitmapSize();
 
-
+        String url = imageUri.toString();
         GlideApp.with(this)
                 .asBitmap()
-                .load(AppGlideOptions.toGlideUrl(imageUri.toString()))
+                .load(isHttp(url) ? AppGlideOptions.toGlideUrl(url) : url)
 //                .load(imageUri)
                 .listener(new RequestListener<Bitmap>() {
                     @Override
@@ -193,6 +194,16 @@ public class TransformImageView extends ImageView {
 //                        }
 //                    }
 //                });
+    }
+
+    private boolean isHttp(String path) {
+        if (!TextUtils.isEmpty(path)) {
+            if (path.startsWith("http")
+                    || path.startsWith("https")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
