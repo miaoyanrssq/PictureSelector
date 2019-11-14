@@ -13,11 +13,20 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestFutureTarget;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.yalantis.ucrop.callback.BitmapLoadCallback;
 import com.yalantis.ucrop.model.ExifInfo;
 import com.yalantis.ucrop.util.BitmapLoadUtils;
 import com.yalantis.ucrop.util.FastBitmapDrawable;
 import com.yalantis.ucrop.util.RectUtils;
+import com.zjrb.core.common.glide.GlideApp;
+import com.zjrb.me.bizcore.glide.AppGlideOptions;
 
 /**
  * Created by Oleksii Shliama (https://github.com/shliama).
@@ -46,12 +55,12 @@ public class TransformImageView extends ImageView {
     private float[] mInitialImageCorners;
     private float[] mInitialImageCenter;
 
-    protected boolean mBitmapDecoded = false;
+    public boolean mBitmapDecoded = false;
     protected boolean mBitmapLaidOut = false;
 
     private int mMaxBitmapSize = 0;
 
-    private String mImageInputPath, mImageOutputPath;
+    public String mImageInputPath, mImageOutputPath;
     private ExifInfo mExifInfo;
 
     /**
@@ -135,30 +144,55 @@ public class TransformImageView extends ImageView {
      * @param imageUri - image Uri
      * @throws Exception - can throw exception if having problems with decoding Uri or OOM.
      */
-    public void setImageUri(@NonNull Uri imageUri, @Nullable Uri outputUri) throws Exception {
+    public void setImageUri(@NonNull final Uri imageUri, @Nullable final Uri outputUri) throws Exception {
         int maxBitmapSize = getMaxBitmapSize();
 
-        BitmapLoadUtils.decodeBitmapInBackground(getContext(), imageUri, outputUri, maxBitmapSize, maxBitmapSize,
-                new BitmapLoadCallback() {
+
+        GlideApp.with(this)
+                .asBitmap()
+                .load(AppGlideOptions.toGlideUrl(imageUri.toString()))
+//                .load(imageUri)
+                .listener(new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                        return false;
+                    }
 
                     @Override
-                    public void onBitmapLoaded(@NonNull Bitmap bitmap, @NonNull ExifInfo exifInfo, @NonNull String imageInputPath, @Nullable String imageOutputPath) {
-                        mImageInputPath = imageInputPath;
-                        mImageOutputPath = imageOutputPath;
-                        mExifInfo = exifInfo;
+                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                        mImageInputPath = outputUri.getPath();
+                        mImageOutputPath = outputUri.getPath();
+//                        mExifInfo = exifInfo;
 
                         mBitmapDecoded = true;
-                        setImageBitmap(bitmap);
+                        setImageBitmap(resource);
+                        return false;
                     }
+                })
 
-                    @Override
-                    public void onFailure(@NonNull Exception bitmapWorkerException) {
-                        Log.e(TAG, "onFailure: setImageUri", bitmapWorkerException);
-                        if (mTransformImageListener != null) {
-                            mTransformImageListener.onLoadFailure(bitmapWorkerException);
-                        }
-                    }
-                });
+                .into(this);
+//
+//        BitmapLoadUtils.decodeBitmapInBackground(getContext(), imageUri, outputUri, maxBitmapSize, maxBitmapSize,
+//                new BitmapLoadCallback() {
+//
+//                    @Override
+//                    public void onBitmapLoaded(@NonNull Bitmap bitmap, @NonNull ExifInfo exifInfo, @NonNull String imageInputPath, @Nullable String imageOutputPath) {
+//                        mImageInputPath = imageInputPath;
+//                        mImageOutputPath = imageOutputPath;
+//                        mExifInfo = exifInfo;
+//
+//                        mBitmapDecoded = true;
+//                        setImageBitmap(bitmap);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Exception bitmapWorkerException) {
+//                        Log.e(TAG, "onFailure: setImageUri", bitmapWorkerException);
+//                        if (mTransformImageListener != null) {
+//                            mTransformImageListener.onLoadFailure(bitmapWorkerException);
+//                        }
+//                    }
+//                });
     }
 
     /**

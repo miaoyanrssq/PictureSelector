@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -21,8 +21,8 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-//    api project(':ucrop')
-    api "cn.daily.android:me-ucrop:0.0.0.2"
+    api project(':ucrop')
+//    api "cn.daily.android:me-ucrop:0.0.0.2"
     //noinspection GradleCompatible
     api "com.android.support:appcompat-v7:28.0.0"
     //noinspection GradleCompatible

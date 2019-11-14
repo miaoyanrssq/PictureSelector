@@ -20,6 +20,8 @@ import com.yalantis.ucrop.callback.BitmapLoadCallback;
 import com.yalantis.ucrop.model.ExifInfo;
 import com.yalantis.ucrop.util.BitmapLoadUtils;
 import com.yalantis.ucrop.util.FileUtils;
+import com.zjrb.core.utils.UIUtils;
+import com.zjrb.me.bizcore.network.cookie.PersistentCookieStore;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -229,6 +233,15 @@ public class BitmapLoadTask extends AsyncTask<Void, Void, BitmapLoadTask.BitmapW
         }
         try {
             URL u = new URL(inputUri.toString());
+//            try {
+//                PersistentCookieStore cookieStore = new PersistentCookieStore(UIUtils.getContext());
+//                HttpURLConnection httpUrlConn = (HttpURLConnection) u.openConnection();
+//                httpUrlConn.setRequestProperty("cookie", cookieStore.getCookiesStr());
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             byte[] buffer = new byte[1024];
             int read;
             BufferedInputStream bin;

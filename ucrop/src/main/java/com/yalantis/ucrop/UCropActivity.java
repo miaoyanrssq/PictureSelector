@@ -43,6 +43,7 @@ import com.yalantis.ucrop.view.TransformImageView;
 import com.yalantis.ucrop.view.UCropView;
 import com.yalantis.ucrop.view.widget.AspectRatioTextView;
 import com.yalantis.ucrop.view.widget.HorizontalProgressWheelView;
+import com.zjrb.core.common.glide.GlideApp;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -675,7 +676,10 @@ public class UCropActivity extends AppCompatActivity {
     }
 
     protected void closeActivity() {
+
         finish();
         overridePendingTransition(0, R.anim.ucrop_close);
+
+
     }
 }

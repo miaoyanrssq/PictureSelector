@@ -44,7 +44,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_fragment:
 //                intent = new Intent(SimpleActivity.this, PhotoFragmentActivity.class);
 //                startActivity(intent);
-                startCrop("https://csi.tmuyun.com/webpic/W0201909/W020190912/W020190912658291496894.png");
+                startCrop("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573625635439&di=b440e9e433dc2360d7aa3c8994252fa3&imgtype=0&src=http%3A%2F%2Fpic15.nipic.com%2F20110812%2F2786001_084429179000_2.jpg");
+//                startCrop("/storage/emulated/0/Android/data/com.luck.pictureselector/cache/1573693540284.jpg");
+//                startCrop("https://csi.tmuyun.com/webpic/W0201910/W020191025/W020191025677815391637.png");
                 break;
         }
     }
@@ -75,7 +77,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
                 .withAspectRatio(2, 1)
                 .withMaxResultSize(400, 200)
                 .withOptions(options)
-                .start(this);
+                .start(this, 69);
     }
 
     @Override

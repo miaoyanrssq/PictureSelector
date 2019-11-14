@@ -117,25 +117,25 @@ public class BitmapCropTask extends AsyncTask<Void, Void, Throwable> {
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(mViewBitmap,
                         Math.round(mViewBitmap.getWidth() * resizeScale),
                         Math.round(mViewBitmap.getHeight() * resizeScale), false);
-                if (mViewBitmap != resizedBitmap) {
-                    mViewBitmap.recycle();
-                }
+//                if (mViewBitmap != resizedBitmap) {
+//                    mViewBitmap.recycle();
+//                }
                 mViewBitmap = resizedBitmap;
 
                 mCurrentScale /= resizeScale;
             }
         }
-
+        Bitmap rotatedBitmap;
         // Rotate if needed
         if (mCurrentAngle != 0) {
             Matrix tempMatrix = new Matrix();
             tempMatrix.setRotate(mCurrentAngle, mViewBitmap.getWidth() / 2, mViewBitmap.getHeight() / 2);
 
-            Bitmap rotatedBitmap = Bitmap.createBitmap(mViewBitmap, 0, 0, mViewBitmap.getWidth(), mViewBitmap.getHeight(),
+            rotatedBitmap = Bitmap.createBitmap(mViewBitmap, 0, 0, mViewBitmap.getWidth(), mViewBitmap.getHeight(),
                     tempMatrix, true);
-            if (mViewBitmap != rotatedBitmap) {
-                mViewBitmap.recycle();
-            }
+//            if (mViewBitmap != rotatedBitmap) {
+//                mViewBitmap.recycle();
+//            }
             mViewBitmap = rotatedBitmap;
         }
 
@@ -148,8 +148,9 @@ public class BitmapCropTask extends AsyncTask<Void, Void, Throwable> {
         Log.i(TAG, "Should crop: " + shouldCrop);
 
         if (shouldCrop) {
-            ExifInterface originalExif = new ExifInterface(mImageInputPath);
+//            ExifInterface originalExif = new ExifInterface(mImageInputPath);
             saveImage(Bitmap.createBitmap(mViewBitmap, cropOffsetX, cropOffsetY, mCroppedImageWidth, mCroppedImageHeight));
+            ExifInterface originalExif = new ExifInterface(mImageInputPath);
             if (mCompressFormat.equals(Bitmap.CompressFormat.JPEG)) {
                 ImageHeaderParser.copyExif(originalExif, mCroppedImageWidth, mCroppedImageHeight, mImageOutputPath);
             }
