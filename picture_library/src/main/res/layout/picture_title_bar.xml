@@ -46,6 +46,19 @@
             android:text="@string/picture_cancel"
             android:textColor="?picture.right.textColor"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/picture_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/picture_right"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/picture_edit"
+            android:textColor="?picture.right.textColor"
+            android:textSize="14sp"
+            />
     </RelativeLayout>
 
     <TextView

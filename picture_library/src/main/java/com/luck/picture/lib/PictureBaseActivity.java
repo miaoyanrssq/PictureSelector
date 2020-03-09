@@ -436,6 +436,7 @@ public class PictureBaseActivity extends FragmentActivity {
             images.addAll(images.size() > 0 ? images.size() - 1 : 0, selectionMedias);
         }
         Intent intent = PictureSelector.putIntentResult(images);
+        intent.putExtra(PictureConfig.EDITABLE, config.enableEdit);
         setResult(RESULT_OK, intent);
         closeActivity();
     }

@@ -73,7 +73,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     private static final int SHOW_DIALOG = 0;
     private static final int DISMISS_DIALOG = 1;
     private ImageView picture_left_back;
-    private TextView picture_title, picture_right, picture_tv_ok, tv_empty,
+    private TextView picture_title, picture_right, picture_edit, picture_tv_ok, tv_empty,
             picture_tv_img_num, picture_id_preview, tv_PlayPause, tv_Stop, tv_Quit,
             tv_musicStatus, tv_musicTotal, tv_musicTime;
     private RelativeLayout rl_picture_title;
@@ -195,6 +195,8 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
         picture_left_back = (ImageView) findViewById(R.id.picture_left_back);
         picture_title = (TextView) findViewById(R.id.picture_title);
         picture_right = (TextView) findViewById(R.id.picture_right);
+        picture_edit = (TextView) findViewById(R.id.picture_edit);
+        picture_edit.setVisibility(config.enableEdit ? View.VISIBLE : View.GONE);
         picture_tv_ok = (TextView) findViewById(R.id.picture_tv_ok);
         picture_id_preview = (TextView) findViewById(R.id.picture_id_preview);
         picture_tv_img_num = (TextView) findViewById(R.id.picture_tv_img_num);
@@ -217,6 +219,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
         }
         picture_left_back.setOnClickListener(this);
         picture_right.setOnClickListener(this);
+        picture_edit.setOnClickListener(this);
         id_ll_ok.setOnClickListener(this);
         picture_title.setOnClickListener(this);
         String title = config.mimeType == PictureMimeType.ofAudio() ?
@@ -489,6 +492,16 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
 //            startActivity(PicturePreviewActivity.class, bundle,
 //                    config.selectionMode == PictureConfig.SINGLE ? 69 : 609);
             overridePendingTransition(R.anim.a5, 0);
+        }
+        if(id == R.id.picture_edit){
+            // TODO: 2020/3/9
+            List<LocalMedia> images = adapter.getSelectedImages();
+            if(images.size() == 0){
+                ToastManage.s(mContext, "没有选择任何内容");
+                return;
+
+            }
+            onResult(images);
         }
 
         if (id == R.id.id_ll_ok || id == R.id.picture_right) {
@@ -875,6 +888,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 picture_tv_ok.setText(getString(R.string.picture_completed));
                 picture_right.setText("完成(" +selectImages.size()+ ")");
                 picture_right.setTextColor(getResources().getColor(R.color._4786ff));
+                picture_edit.setTextColor(getResources().getColor(R.color._4786ff));
                 anim = false;
             }
         } else {
@@ -890,6 +904,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 picture_tv_ok.setText(getString(R.string.picture_please_select));
                 picture_right.setText("完成");
                 picture_right.setTextColor(Color.GRAY);
+                picture_edit.setTextColor(Color.GRAY);
             }
         }
     }

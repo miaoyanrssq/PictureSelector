@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //.videoQuality()// 视频录制质量 0 or 1
                         //.videoSecond()//显示多少秒以内的视频or音频也可适用
                         //.recordVideoSecond()//录制视频秒数 默认60s
+                        .enableEdit(true)
                         .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
             } else {
                 // 单独拍照
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
                     selectList = PictureSelector.obtainMultipleResult(data);
+                    boolean enableEdit = data.getBooleanExtra(PictureConfig.EDITABLE, false);
                     // 例如 LocalMedia 里面返回三种path
                     // 1.media.getPath(); 为原图path
                     // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true

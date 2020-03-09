@@ -70,6 +70,15 @@ public class PictureSelectionModel {
     }
 
     /**
+     * @param enableEdit Do you want to start edit ?
+     * @return
+     */
+    public PictureSelectionModel enableEdit(boolean enableEdit) {
+        selectionConfig.enableEdit = enableEdit;
+        return this;
+    }
+
+    /**
      * @param enablePreviewAudio Do you want to play audio ?
      * @return
      */

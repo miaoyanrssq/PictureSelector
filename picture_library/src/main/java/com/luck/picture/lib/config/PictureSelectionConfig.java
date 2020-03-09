@@ -54,6 +54,7 @@ public final class PictureSelectionConfig implements Parcelable {
     public boolean checkNumMode;
     public boolean openClickSound;
     public boolean enableCrop;
+    public boolean enableEdit;
     public boolean freeStyleCropEnabled;
     public boolean circleDimmedLayer;
     public boolean showCropFrame;
@@ -96,6 +97,7 @@ public final class PictureSelectionConfig implements Parcelable {
         checkNumMode = false;
         openClickSound = false;
         enableCrop = false;
+        enableEdit = false;
         freeStyleCropEnabled = false;
         circleDimmedLayer = false;
         showCropFrame = true;
@@ -168,6 +170,7 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeByte(this.checkNumMode ? (byte) 1 : (byte) 0);
         dest.writeByte(this.openClickSound ? (byte) 1 : (byte) 0);
         dest.writeByte(this.enableCrop ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.enableEdit ? (byte) 1 : (byte) 0);
         dest.writeByte(this.freeStyleCropEnabled ? (byte) 1 : (byte) 0);
         dest.writeByte(this.circleDimmedLayer ? (byte) 1 : (byte) 0);
         dest.writeByte(this.showCropFrame ? (byte) 1 : (byte) 0);
@@ -218,6 +221,7 @@ public final class PictureSelectionConfig implements Parcelable {
         this.checkNumMode = in.readByte() != 0;
         this.openClickSound = in.readByte() != 0;
         this.enableCrop = in.readByte() != 0;
+        this.enableEdit = in.readByte() != 0;
         this.freeStyleCropEnabled = in.readByte() != 0;
         this.circleDimmedLayer = in.readByte() != 0;
         this.showCropFrame = in.readByte() != 0;
