@@ -429,6 +429,15 @@ public class PictureBaseActivity extends FragmentActivity {
      * @param images
      */
     protected void onResult(List<LocalMedia> images) {
+        onResult(images, false);
+    }
+
+    /**
+     *
+     * @param images
+     * @param editable 是否可编辑，用于趣看编辑，在点击头部编辑按钮时为true
+     */
+    protected void onResult(List<LocalMedia> images, boolean editable){
         dismissCompressDialog();
         if (config.camera
                 && config.selectionMode == PictureConfig.MULTIPLE
@@ -436,7 +445,7 @@ public class PictureBaseActivity extends FragmentActivity {
             images.addAll(images.size() > 0 ? images.size() - 1 : 0, selectionMedias);
         }
         Intent intent = PictureSelector.putIntentResult(images);
-        intent.putExtra(PictureConfig.EDITABLE, config.enableEdit);
+        intent.putExtra(PictureConfig.EDITABLE, editable);
         setResult(RESULT_OK, intent);
         closeActivity();
     }

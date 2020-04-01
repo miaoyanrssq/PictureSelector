@@ -501,7 +501,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 return;
 
             }
-            onResult(images);
+            onResult(images, true);
         }
 
         if (id == R.id.id_ll_ok || id == R.id.picture_right) {
